@@ -12,17 +12,24 @@ export default function App() {
   const [giftOpened, setGiftOpened] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
   const [cinematicMode, setCinematicMode] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false); // ✅ NEW
 
   const audioRef = useRef(null);
   const videoRef = useRef(null);
 
-  /* 🎵 Auto Music */
-  useEffect(() => {
-    if (audioRef.current) {
+  /* 🎵 Play / Pause Music */
+  const toggleMusic = () => {
+    if (!audioRef.current) return;
+
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
       audioRef.current.volume = 1;
       audioRef.current.play().catch(() => {});
     }
-  }, []);
+
+    setIsPlaying(!isPlaying);
+  };
 
   /* 💕 Floating Hearts */
   useEffect(() => {
@@ -46,7 +53,6 @@ export default function App() {
     setShowFireworks(true);
     setShowBirthdayAnimation(true);
 
-    // Stop animation after 10 sec
     setTimeout(() => {
       setShowBirthdayAnimation(false);
     }, 10000);
@@ -62,27 +68,30 @@ export default function App() {
   return (
     <div className={`container ${cinematicMode ? "cinematic" : ""}`}>
 
+      {/* 🎵 Music Button Top Right */}
+      <button className="music-btn" onClick={toggleMusic}>
+        {isPlaying ? "⏸ Pause Music" : "▶ Play Music"}
+      </button>
+
       <h1 className="banner">
         🎀 Happy Birthday PUNEET 🎀
       </h1>
 
-      <audio ref={audioRef} loop autoPlay>
+      {/* ❌ Removed autoPlay */}
+      <audio ref={audioRef} loop>
         <source src="music.mp3" type="audio/mpeg" />
       </audio>
 
       {/* 🎂 Cake + Photo Frames Wrapper */}
       <div className="cake-wrapper">
 
-        {/* Left Photo Frame */}
         <div className="photo-frame left-frame">
           <img src="photo1.jpg" alt="Memory 1" />
         </div>
 
-        {/* Cake */}
         <div className="cake">
           <div className="frosting"></div>
 
-          {/* Left Side - 2 Candles */}
           <div className="candle-group-left">
             <div className="candle" onClick={blowCandle}>
               <div className={`flame ${candles[0] ? "" : "blown"}`}></div>
@@ -93,7 +102,6 @@ export default function App() {
             </div>
           </div>
 
-          {/* Right Side - 1 Candle */}
           <div className="candle-group-right">
             <div className="candle" onClick={blowCandle}>
               <div className={`flame ${candles[2] ? "" : "blown"}`}></div>
@@ -101,7 +109,6 @@ export default function App() {
           </div>
         </div>
 
-        {/* Right Photo Frame */}
         <div className="photo-frame right-frame">
           <img src="photo2.jpg" alt="Memory 2" />
         </div>
@@ -145,6 +152,7 @@ export default function App() {
                   onClick={() => {
                     setGiftOpened(true);
                     audioRef.current.pause();
+                    setIsPlaying(false);
                   }}
                 >
                   🎁
@@ -181,8 +189,8 @@ export default function App() {
               className="close-video"
               onClick={() => {
                 if (videoRef.current) {
-  videoRef.current.pause();
-}
+                  videoRef.current.pause();
+                }
                 setShowVideo(false);
                 setCinematicMode(false);
               }}
@@ -201,7 +209,6 @@ export default function App() {
         </div>
       )}
 
-      {/* 🎊 Large Full Screen Birthday Animation */}
       {showBirthdayAnimation && (
         <div className="birthday-fullscreen">
           🎉 HAPPY BIRTHDAY PUNEET 🎉
