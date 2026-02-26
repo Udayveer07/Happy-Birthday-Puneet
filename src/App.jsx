@@ -67,7 +67,7 @@ export default function App() {
       </h1>
 
       <audio ref={audioRef} loop autoPlay>
-        <source src={`${import.meta.env.BASE_URL}music.mp3`} type="audio/mpeg" />
+        <source src="music.mp3" type="audio/mpeg" />
       </audio>
 
       {/* 🎂 Cake + Photo Frames Wrapper */}
@@ -75,7 +75,7 @@ export default function App() {
 
         {/* Left Photo Frame */}
         <div className="photo-frame left-frame">
-          <img src={`${import.meta.env.BASE_URL}photo1.jpg`} />
+          <img src="photo1.jpg" alt="Memory 1" />
         </div>
 
         {/* Cake */}
@@ -103,7 +103,7 @@ export default function App() {
 
         {/* Right Photo Frame */}
         <div className="photo-frame right-frame">
-          <img src={`${import.meta.env.BASE_URL}photo2.jpg`} />
+          <img src="photo2.jpg" alt="Memory 2" />
         </div>
 
       </div>
@@ -191,11 +191,11 @@ export default function App() {
             </button>
 
             <video
-  src={`${import.meta.env.BASE_URL}video.mp4`}
-  controls
+              ref={videoRef}
+              src="video.mp4"
+              controls
               autoPlay
               className="video-player"
-              
             />
           </div>
         </div>
